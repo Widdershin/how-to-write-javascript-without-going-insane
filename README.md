@@ -25,7 +25,7 @@ Objects
 
 -----
 
-Here is one way to make an object in Javascript.
+Here is one way to make an object in JavaScript.
 
 ```js
 function Person (name) {
