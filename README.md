@@ -154,7 +154,6 @@ $('a.link').on('click', function doAThing (event) {
 Even better:
 ```js
 function doAThing (event) {
-  // do a thing
 }
 
 $('a.link').on('click', doAThing);

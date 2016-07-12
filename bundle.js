@@ -35,11 +35,13 @@ function keysDriver() {
   };
 }
 
-},{"keycode":239,"xstream":245,"xstream/extra/fromEvent":244}],2:[function(require,module,exports){
+},{"keycode":239,"xstream":246,"xstream/extra/fromEvent":245}],2:[function(require,module,exports){
 'use strict';
 
-var _templateObject = _taggedTemplateLiteral(['\n  Given: ', '\n\n                   {sources.Keys}\n                   /     |                        /      |                        /       |                        /        |           {.down(\'Left\')} {.down(\'Right\')} {.down(\'Space\')}\n          |              |              |\n          |            right$         space$\n          |              |              |\n          |         {xs.merge(right$, space$)}\n          |                   |\n    {.mapTo(-1)}         {.mapTo(+1)}\n          |                   |\n        back$             forward$\n          |                   |\n        {xs.merge(back$, forward$)}\n                     |\n  {.fold((total, change) => limitTo(0, slides.length - 1, total + change), 0)}\n                     |\n    {.map(slideIndex => slides[slideIndex])}\n                     |\n                   slide$\n'], ['\n  Given: ', '\n\n                   {sources.Keys}\n                   /     |      \\\n                  /      |       \\\n                 /       |        \\\n                /        |         \\\n  {.down(\'Left\')} {.down(\'Right\')} {.down(\'Space\')}\n          |              |              |\n          |            right$         space$\n          |              |              |\n          |         {xs.merge(right$, space$)}\n          |                   |\n    {.mapTo(-1)}         {.mapTo(+1)}\n          |                   |\n        back$             forward$\n          |                   |\n        {xs.merge(back$, forward$)}\n                     |\n  {.fold((total, change) => limitTo(0, slides.length - 1, total + change), 0)}\n                     |\n    {.map(slideIndex => slides[slideIndex])}\n                     |\n                   slide$\n']),
-    _templateObject2 = _taggedTemplateLiteral(['\n  Given: ', '\n\n          {sources}\n              |\n      {slideNavigation}\n              |\n          {.slide$}\n              |\n       {.map(marked)}\n              |\n        {.map(view)}\n              |\n             DOM\n\n'], ['\n  Given: ', '\n\n          {sources}\n              |\n      {slideNavigation}\n              |\n          {.slide$}\n              |\n       {.map(marked)}\n              |\n        {.map(view)}\n              |\n             DOM\n\n']);
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _templateObject = _taggedTemplateLiteral(['\n  Given: ', '\n\n                   {sources.Keys}\n                   /     |                        /      |                        /       |                        /        |           {.down(\'Left\')} {.down(\'Right\')} {.down(\'Space\')}\n          |              |              |\n          |            right$         space$\n          |              |              |\n          |         {xs.merge(right$, space$)}\n          |                   |\n    {.mapTo(-1)}         {.mapTo(+1)}\n          |                   |\n        back$             forward$\n          |                   |\n        {xs.merge(back$, forward$)}\n                    |\n         {.compose(debounce(100))}\n            |                |\n            |                |\n            |                |\n            |       {.fold((total, change) => limitTo(0, slides.length - 1, total + change), 0)}\n            |                          |\n      {.startWith(1)}     {.map(slideIndex => slides[slideIndex])}\n            |                          |\n        direction$                 slide$\n'], ['\n  Given: ', '\n\n                   {sources.Keys}\n                   /     |      \\\n                  /      |       \\\n                 /       |        \\\n                /        |         \\\n  {.down(\'Left\')} {.down(\'Right\')} {.down(\'Space\')}\n          |              |              |\n          |            right$         space$\n          |              |              |\n          |         {xs.merge(right$, space$)}\n          |                   |\n    {.mapTo(-1)}         {.mapTo(+1)}\n          |                   |\n        back$             forward$\n          |                   |\n        {xs.merge(back$, forward$)}\n                    |\n         {.compose(debounce(100))}\n            |                |\n            |                |\n            |                |\n            |       {.fold((total, change) => limitTo(0, slides.length - 1, total + change), 0)}\n            |                          |\n      {.startWith(1)}     {.map(slideIndex => slides[slideIndex])}\n            |                          |\n        direction$                 slide$\n']),
+    _templateObject2 = _taggedTemplateLiteral(['\n  Given: ', '\n\n                    {sources}\n                        |\n                {slideNavigation}\n                     |         |\n                 {.slide$} {.direction$}\n                     |         |\n           {highlightCode}     |\n                     |         |\n                     |         |\n                   slide$  direction$\n                     |         |\n  {slide$.map(slide => direction$.map(direction => [slide, direction]))}\n                        |\n                    {.flatten()}\n                        |\n                    {.map(view)}\n                        |\n                       DOM\n\n'], ['\n  Given: ', '\n\n                    {sources}\n                        |\n                {slideNavigation}\n                     |         |\n                 {.slide$} {.direction$}\n                     |         |\n           {highlightCode}     |\n                     |         |\n                     |         |\n                   slide$  direction$\n                     |         |\n  {slide$.map(slide => direction$.map(direction => [slide, direction]))}\n                        |\n                    {.flatten()}\n                        |\n                    {.map(view)}\n                        |\n                       DOM\n\n']);
 
 var _xstreamRun = require('@cycle/xstream-run');
 
@@ -52,6 +54,10 @@ var _streamTree2 = _interopRequireDefault(_streamTree);
 var _xstream = require('xstream');
 
 var _xstream2 = _interopRequireDefault(_xstream);
+
+var _debounce = require('xstream/extra/debounce');
+
+var _debounce2 = _interopRequireDefault(_debounce);
 
 var _marked = require('marked');
 
@@ -75,10 +81,33 @@ _marked2.default.setOptions({
 
 
 
-var slides = "How to write JavaScript without going insane\n===\n\nBecause it's clearly too late for me.\n\n-----\n\nWhat is this talk?\n---\n\n * Practical tips\n * Little code snippets\n * A mixture of dos, donts and useful tools\n\nWhat is this talk not?\n---\n\n * A pitch for any particular framework\n * A suggestion that you should write JavaScript, merely how to survive if you do.\n\n-----\n\nObjects\n===\n\n-----\n\nHere is one way to make an object in JavaScript.\n\n```js\nfunction Person (name) {\n  this.name = name;\n}\n\nPerson.prototype.sayName = function () {\n  console.log(this.name);\n}\n\nvar person = new Person('Sofia');\n\nperson.sayName();\n// => 'Sofia'\n```\n-----\n\nHere is another.\n\n```js\nvar person = {\n  name: 'Sofia'\n}\n\nfunction sayName (person) {\n  console.log(person.name);\n}\n\nsayName(person);\n// => 'Sofia'\n```\n\n-----\n\nSometimes we want a number of similar objects.\n\n```js\nfunction Person (name) {\n  return {\n    name: name,\n\n    kind: 'human'\n  }\n}\n\nfunction sayName (person) {\n  console.log(person.name);\n}\n\nvar person = Person('Sofia');\n\nsayName(person);\n// => 'Sofia'\n```\n\n-----\n\nWhy though?\n===\n\n-----\n\nBecause of `this`.\n\nThe value of `this` in a function depends upon how it is called:\n<!-- skip-example -->\n```js\nwindow.name = 'wat';\n\nvar person = {\n  name: 'Charlie',\n  sayName: function () {\n    console.log(this.name);\n  }\n}\n\nperson.sayName();\n// => 'Charlie'\n\nvar sayName = person.sayName;\n\nsayName();\n// => 'wat'\n```\n\n`this` can lead to some confusing bugs.\n\n-----\n\nAvoiding `this`\n---\n\nInstead of:\n```js\n$('a.link').on('click', function () {\n  this.preventDefault();\n});\n```\n\nTry:\n```js\n$('a.link').on('click', function (event) {\n  event.preventDefault();\n});\n```\n\n-----\n\nName your functions\n---\n\nInstead of:\n```js\n$('a.link').on('click', function (event) {\n  // do a thing\n});\n```\n\nTry:\n```js\n$('a.link').on('click', function doAThing (event) {\n  // do a thing\n});\n```\n\nEven better:\n```js\nfunction doAThing (event) {\n  // do a thing\n}\n\n$('a.link').on('click', doAThing);\n```\n\n-----\n\n`.map`, `.filter` and `.reduce` are your friends.\n---\n\nMost of the code I write in JavaScript uses just:\n\n  * objects\n  * arrays\n  * functions\n  * `.map`, `.filter`, `.reduce`\n  * `.forEach` is nice too\n\n-----\n\nClasses and inheritance\n---\n\nClasses and inheritance are at odds with the most elegant parts of JavaScript.\n\n-----\n\n`window`\n---\n\n```js\n// widget.js\nif (!window.OurBusiness) {\n  window.OurBusiness = {};\n}\n\nwindow.OurBusiness.Widget = Widget;\n```\n\n```js\n// main.js\nvar Widget = window.OurBusiness.Widget;\n\nnew Widget().go();\n```\n\nProblems:\n\n * Everything is global.\n * What loads first? Let the web decide.\n * Hard to test\n\n-----\n\nInstead, modules:\n\n```js\n// widget.js\nmodule.exports = Widget;\n```\n\n```js\n// main.js\nvar Widget = require('./widget');\n\nnew Widget().go();\n```\n\nBenefits:\n * You can see where things come from\n * No more globals\n * Much easier to package things up\n\n-----\n\nHang on, how can I use modules in a browser?\n---\n\n`browserify`!\n\n```js\n// main.js\nvar Widget = require('./widget');\n\nnew Widget().go();\n```\n\n`browserify` compiles your node code so that it can be used in the browser.\n\n```bash\n$ npm install browserify -g\n\n$ browserify main.js -o bundle.js\n```\n\n```html\n<script type=\"text/javascript\" src=\"bundle.js\"></script>\n```\n\n-----\n\nWait, npm and node? What does this have to do with the browser?\n---\n\n`npm` is the easiest way to install and manage dependencies in a JavaScript project.\n\nWriting code that runs on `node` has some nifty advantages though:\n  * Can run same code on client and server\n  * Can run unit tests without needing a browser\n  * With `browserify`, can use most of `npm` on the web.\n\n-----\n\nTest your code\n---\n\nI like to use a command line runner like `mocha`, because it's similar to `rspec` and has great file watching/autorun functionality built in.\n\nLots of people like `tape`, which is cool too.\n\nMost of the time I don't even need a browser for my tests, or I only run some with a browser.\n\n-----\n\nES2015\n---\n\nI write most everything in ES2015, because I find it has some niceties I enjoy.\n\nNot all parts of ES2015 are that great, in my opinion. I tend to avoid classes/inheritance, because I prefer the relative simplicity of objects + functions.\n\n-----\n\nYou might not need...\n---\n\n* JavaScript\n* jQuery\n* ES2015\n* npm\n* A framework\n* A database\n* A server\n\nBut sometimes they can be useful.\n\n-----\n\nDebugging\n===\n\n-----\n\nchrome debugger\n---\n\nLearn to love the Chrome devtools debugger.\n\nFun fact, you can trigger the debugger in code with `debugger`.\n\n```js\nfunction doAThing () {\n  // ...\n\n  debugger\n\n  return aThing;\n}\n```\n\nWon't trigger until the devtools are open, which is a nice way to get to where you want to go.\n\n-----\n\nconsole.*()\n---\n\nLove it or hate it, `console.log()` is one of the best ways to debug in JS.\n\nThere are some other great `console` methods though:\n\n```js\nconsole.dir(objectOrElement);\n```\n\n![chrome dir](https://developer.chrome.com/devtools/docs/console-files/consoledir-body.png)\n\n-----\n\n```js\nconsole.group(label);\nconsole.groupEnd();\n```\n\n![chrome group](https://pbs.twimg.com/media/CbTQwOZW4AAsedm.png)\n\n-----\n\nLibraries\n===\n\n-----\n\nlodash\n---\n\nFills in a missing chunk of methods in JavaScript that make functional programming much nicer.  Comparable to Ruby's `Enumerable` module.\n\nFavourites:\n\n * `_.flatten`\n * `_.groupBy`\n * `_.zip`\n * `_.without`\n\n-----\n\nmoment.js\n---\n\nTime in JavaScript is a terrifying subject.\n\n`moment.js` provides a lovely API for working with time.\n\n<!-- skip-example -->\n```js\nmoment().add(7, 'days')\n```\n\n-----\n\neslint\n---\n\n`eslint` is a fast and configurable linter for JavaScript.\n\nIt's a great way to enforce code style, and catch silly mistakes.\n\n-----\n\nConclusion\n---\n * JavaScript works best as a functional programming language\n * Traditional OO patterns tend to lead to frustration\n".split('-----\n');
+var slides = "How to write JavaScript without going insane\n===\n\nBecause it's clearly too late for me.\n\n-----\n\nWhat is this talk?\n---\n\n * Practical tips\n * Little code snippets\n * A mixture of dos, donts and useful tools\n\nWhat is this talk not?\n---\n\n * A pitch for any particular framework\n * A suggestion that you should write JavaScript, merely how to survive if you do.\n\n-----\n\nObjects\n===\n\n-----\n\nHere is one way to make an object in JavaScript.\n\n```js\nfunction Person (name) {\n  this.name = name;\n}\n\nPerson.prototype.sayName = function () {\n  console.log(this.name);\n}\n\nvar person = new Person('Sofia');\n\nperson.sayName();\n// => 'Sofia'\n```\n-----\n\nHere is another.\n\n```js\nvar person = {\n  name: 'Sofia'\n}\n\nfunction sayName (person) {\n  console.log(person.name);\n}\n\nsayName(person);\n// => 'Sofia'\n```\n\n-----\n\nSometimes we want a number of similar objects.\n\n```js\nfunction Person (name) {\n  return {\n    name: name,\n\n    kind: 'human'\n  }\n}\n\nfunction sayName (person) {\n  console.log(person.name);\n}\n\nvar person = Person('Sofia');\n\nsayName(person);\n// => 'Sofia'\n```\n\n-----\n\nWhy though?\n===\n\n-----\n\nBecause of `this`.\n\nThe value of `this` in a function depends upon how it is called:\n<!-- skip-example -->\n```js\nwindow.name = 'wat';\n\nvar person = {\n  name: 'Charlie',\n  sayName: function () {\n    console.log(this.name);\n  }\n}\n\nperson.sayName();\n// => 'Charlie'\n\nvar sayName = person.sayName;\n\nsayName();\n// => 'wat'\n```\n\n`this` can lead to some confusing bugs.\n\n-----\n\nAvoiding `this`\n---\n\nInstead of:\n```js\n$('a.link').on('click', function () {\n  this.preventDefault();\n});\n```\n\nTry:\n```js\n$('a.link').on('click', function (event) {\n  event.preventDefault();\n});\n```\n\n-----\n\nName your functions\n---\n\nInstead of:\n```js\n$('a.link').on('click', function (event) {\n  // do a thing\n});\n```\n\nTry:\n```js\n$('a.link').on('click', function doAThing (event) {\n  // do a thing\n});\n```\n\nEven better:\n```js\nfunction doAThing (event) {\n}\n\n$('a.link').on('click', doAThing);\n```\n\n-----\n\n`.map`, `.filter` and `.reduce` are your friends.\n---\n\nMost of the code I write in JavaScript uses just:\n\n  * objects\n  * arrays\n  * functions\n  * `.map`, `.filter`, `.reduce`\n  * `.forEach` is nice too\n\n-----\n\nClasses and inheritance\n---\n\nClasses and inheritance are at odds with the most elegant parts of JavaScript.\n\n-----\n\n`window`\n---\n\n```js\n// widget.js\nif (!window.OurBusiness) {\n  window.OurBusiness = {};\n}\n\nwindow.OurBusiness.Widget = Widget;\n```\n\n```js\n// main.js\nvar Widget = window.OurBusiness.Widget;\n\nnew Widget().go();\n```\n\nProblems:\n\n * Everything is global.\n * What loads first? Let the web decide.\n * Hard to test\n\n-----\n\nInstead, modules:\n\n```js\n// widget.js\nmodule.exports = Widget;\n```\n\n```js\n// main.js\nvar Widget = require('./widget');\n\nnew Widget().go();\n```\n\nBenefits:\n * You can see where things come from\n * No more globals\n * Much easier to package things up\n\n-----\n\nHang on, how can I use modules in a browser?\n---\n\n`browserify`!\n\n```js\n// main.js\nvar Widget = require('./widget');\n\nnew Widget().go();\n```\n\n`browserify` compiles your node code so that it can be used in the browser.\n\n```bash\n$ npm install browserify -g\n\n$ browserify main.js -o bundle.js\n```\n\n```html\n<script type=\"text/javascript\" src=\"bundle.js\"></script>\n```\n\n-----\n\nWait, npm and node? What does this have to do with the browser?\n---\n\n`npm` is the easiest way to install and manage dependencies in a JavaScript project.\n\nWriting code that runs on `node` has some nifty advantages though:\n  * Can run same code on client and server\n  * Can run unit tests without needing a browser\n  * With `browserify`, can use most of `npm` on the web.\n\n-----\n\nTest your code\n---\n\nI like to use a command line runner like `mocha`, because it's similar to `rspec` and has great file watching/autorun functionality built in.\n\nLots of people like `tape`, which is cool too.\n\nMost of the time I don't even need a browser for my tests, or I only run some with a browser.\n\n-----\n\nES2015\n---\n\nI write most everything in ES2015, because I find it has some niceties I enjoy.\n\nNot all parts of ES2015 are that great, in my opinion. I tend to avoid classes/inheritance, because I prefer the relative simplicity of objects + functions.\n\n-----\n\nYou might not need...\n---\n\n* JavaScript\n* jQuery\n* ES2015\n* npm\n* A framework\n* A database\n* A server\n\nBut sometimes they can be useful.\n\n-----\n\nDebugging\n===\n\n-----\n\nchrome debugger\n---\n\nLearn to love the Chrome devtools debugger.\n\nFun fact, you can trigger the debugger in code with `debugger`.\n\n```js\nfunction doAThing () {\n  // ...\n\n  debugger\n\n  return aThing;\n}\n```\n\nWon't trigger until the devtools are open, which is a nice way to get to where you want to go.\n\n-----\n\nconsole.*()\n---\n\nLove it or hate it, `console.log()` is one of the best ways to debug in JS.\n\nThere are some other great `console` methods though:\n\n```js\nconsole.dir(objectOrElement);\n```\n\n![chrome dir](https://developer.chrome.com/devtools/docs/console-files/consoledir-body.png)\n\n-----\n\n```js\nconsole.group(label);\nconsole.groupEnd();\n```\n\n![chrome group](https://pbs.twimg.com/media/CbTQwOZW4AAsedm.png)\n\n-----\n\nLibraries\n===\n\n-----\n\nlodash\n---\n\nFills in a missing chunk of methods in JavaScript that make functional programming much nicer.  Comparable to Ruby's `Enumerable` module.\n\nFavourites:\n\n * `_.flatten`\n * `_.groupBy`\n * `_.zip`\n * `_.without`\n\n-----\n\nmoment.js\n---\n\nTime in JavaScript is a terrifying subject.\n\n`moment.js` provides a lovely API for working with time.\n\n<!-- skip-example -->\n```js\nmoment().add(7, 'days')\n```\n\n-----\n\neslint\n---\n\n`eslint` is a fast and configurable linter for JavaScript.\n\nIt's a great way to enforce code style, and catch silly mistakes.\n\n-----\n\nConclusion\n---\n * JavaScript works best as a functional programming language\n * Traditional OO patterns tend to lead to frustration\n".split('-----\n').map(function (slide, index) {
+  return { slide: slide, key: index };
+});
 
-function view(slide) {
-  return (0, _dom.div)('.slide', { props: { innerHTML: slide } });
+function highlightCode(slide$) {
+  return slide$.map(function (_ref) {
+    var slide = _ref.slide;
+    var key = _ref.key;
+    return { slide: (0, _marked2.default)(slide), key: key };
+  });
+}
+
+function view(_ref2) {
+  var _ref3 = _slicedToArray(_ref2, 2);
+
+  var slide = _ref3[0];
+  var direction = _ref3[1];
+
+  var style = {
+    position: 'absolute',
+    width: '93.5%',
+    transform: 'translate(' + 100 * direction + 'vw, 0%)',
+    delayed: { transform: 'translate(0, 0)' },
+    remove: { transform: 'translate(' + 100 * -direction + 'vw, 0)' }
+  };
+
+  return (0, _dom.div)('.slide', { key: slide.key, style: style, props: { innerHTML: slide.slide } });
 }
 
 function limitTo(min, max, value) {
@@ -93,9 +122,9 @@ function limitTo(min, max, value) {
   return value;
 }
 
-var slideNavigation = (0, _streamTree2.default)(_templateObject, { xs: _xstream2.default, slides: slides, limitTo: limitTo });
+var slideNavigation = (0, _streamTree2.default)(_templateObject, { xs: _xstream2.default, slides: slides, limitTo: limitTo, debounce: _debounce2.default });
 
-var main = (0, _streamTree2.default)(_templateObject2, { xs: _xstream2.default, slides: slides, div: _dom.div, marked: _marked2.default, view: view, slideNavigation: slideNavigation });
+var main = (0, _streamTree2.default)(_templateObject2, { xs: _xstream2.default, slides: slides, div: _dom.div, highlightCode: highlightCode, view: view, slideNavigation: slideNavigation });
 
 var drivers = {
   DOM: (0, _dom.makeDOMDriver)('.app'),
@@ -104,7 +133,7 @@ var drivers = {
 
 (0, _xstreamRun.run)(main, drivers);
 
-},{"./drivers/keys-driver":1,"@cycle/dom":12,"@cycle/xstream-run":70,"highlight.js":76,"marked":240,"stream-tree":241,"xstream":245}],3:[function(require,module,exports){
+},{"./drivers/keys-driver":1,"@cycle/dom":12,"@cycle/xstream-run":70,"highlight.js":76,"marked":240,"stream-tree":241,"xstream":246,"xstream/extra/debounce":244}],3:[function(require,module,exports){
 "use strict";
 var ScopeChecker_1 = require('./ScopeChecker');
 var utils_1 = require('./utils');
@@ -271,7 +300,7 @@ var HTMLSource = (function () {
 }());
 exports.HTMLSource = HTMLSource;
 
-},{"@cycle/xstream-adapter":21,"xstream":245}],6:[function(require,module,exports){
+},{"@cycle/xstream-adapter":21,"xstream":246}],6:[function(require,module,exports){
 "use strict";
 var xstream_adapter_1 = require('@cycle/xstream-adapter');
 var xstream_1 = require('xstream');
@@ -434,7 +463,7 @@ var MainDOMSource = (function () {
 }());
 exports.MainDOMSource = MainDOMSource;
 
-},{"./ElementFinder":3,"./EventDelegator":4,"./fromEvent":9,"./isolate":13,"./utils":20,"@cycle/xstream-adapter":21,"matches-selector":22,"xstream":245}],7:[function(require,module,exports){
+},{"./ElementFinder":3,"./EventDelegator":4,"./fromEvent":9,"./isolate":13,"./utils":20,"@cycle/xstream-adapter":21,"matches-selector":22,"xstream":246}],7:[function(require,module,exports){
 "use strict";
 var ScopeChecker = (function () {
     function ScopeChecker(scope, isolateModule) {
@@ -507,7 +536,7 @@ function fromEvent(element, eventName, useCapture) {
 }
 exports.fromEvent = fromEvent;
 
-},{"xstream":245}],10:[function(require,module,exports){
+},{"xstream":246}],10:[function(require,module,exports){
 "use strict";
 var hyperscript_1 = require('./hyperscript');
 function isValidString(param) {
@@ -1114,7 +1143,7 @@ function makeDOMDriver(container, options) {
 }
 exports.makeDOMDriver = makeDOMDriver;
 
-},{"./MainDOMSource":6,"./VNodeWrapper":8,"./isolateModule":14,"./modules":18,"./transposition":19,"./utils":20,"@cycle/xstream-adapter":21,"snabbdom":67,"xstream":245}],16:[function(require,module,exports){
+},{"./MainDOMSource":6,"./VNodeWrapper":8,"./isolateModule":14,"./modules":18,"./transposition":19,"./utils":20,"@cycle/xstream-adapter":21,"snabbdom":67,"xstream":246}],16:[function(require,module,exports){
 "use strict";
 var xstream_adapter_1 = require('@cycle/xstream-adapter');
 var transposition_1 = require('./transposition');
@@ -1195,7 +1224,7 @@ function mockDOMSource(streamAdapter, mockConfig) {
 }
 exports.mockDOMSource = mockDOMSource;
 
-},{"@cycle/xstream-adapter":21,"xstream":245}],18:[function(require,module,exports){
+},{"@cycle/xstream-adapter":21,"xstream":246}],18:[function(require,module,exports){
 "use strict";
 var ClassModule = require('snabbdom/modules/class');
 exports.ClassModule = ClassModule;
@@ -1260,7 +1289,7 @@ function makeTransposeVNode(runStreamAdapter) {
 }
 exports.makeTransposeVNode = makeTransposeVNode;
 
-},{"@cycle/xstream-adapter":21,"xstream":245}],20:[function(require,module,exports){
+},{"@cycle/xstream-adapter":21,"xstream":246}],20:[function(require,module,exports){
 "use strict";
 function isElement(obj) {
     return typeof HTMLElement === "object" ?
@@ -1342,7 +1371,7 @@ var XStreamAdapter = {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = XStreamAdapter;
 
-},{"xstream":245}],22:[function(require,module,exports){
+},{"xstream":246}],22:[function(require,module,exports){
 'use strict';
 
 var proto = Element.prototype;
@@ -4991,7 +5020,7 @@ exports.default = Cycle;
 
 },{}],72:[function(require,module,exports){
 arguments[4][21][0].apply(exports,arguments)
-},{"dup":21,"xstream":245}],73:[function(require,module,exports){
+},{"dup":21,"xstream":246}],73:[function(require,module,exports){
 var indexOf = require('indexof');
 
 var Object_keys = function (obj) {
@@ -23987,6 +24016,108 @@ exports.default = Stream;
 },{}],244:[function(require,module,exports){
 "use strict";
 var core_1 = require('../core');
+var DebounceOperator = (function () {
+    function DebounceOperator(dt, ins) {
+        this.dt = dt;
+        this.ins = ins;
+        this.type = 'debounce';
+        this.out = null;
+        this.value = null;
+        this.id = null;
+    }
+    DebounceOperator.prototype._start = function (out) {
+        this.out = out;
+        this.ins._add(this);
+    };
+    DebounceOperator.prototype._stop = function () {
+        this.ins._remove(this);
+        this.out = null;
+        this.value = null;
+        this.id = null;
+    };
+    DebounceOperator.prototype.clearInterval = function () {
+        var id = this.id;
+        if (id !== null) {
+            clearInterval(id);
+        }
+        this.id = null;
+    };
+    DebounceOperator.prototype._n = function (t) {
+        var _this = this;
+        var u = this.out;
+        if (!u)
+            return;
+        this.value = t;
+        this.clearInterval();
+        this.id = setInterval(function () {
+            _this.clearInterval();
+            u._n(t);
+        }, this.dt);
+    };
+    DebounceOperator.prototype._e = function (err) {
+        var u = this.out;
+        if (!u)
+            return;
+        this.clearInterval();
+        u._e(err);
+    };
+    DebounceOperator.prototype._c = function () {
+        var u = this.out;
+        if (!u)
+            return;
+        this.clearInterval();
+        u._c();
+    };
+    return DebounceOperator;
+}());
+/**
+ * Delays events until a certain amount of silence has passed. If that timespan
+ * of silence is not met the event is dropped.
+ *
+ * Marble diagram:
+ *
+ * ```text
+ * --1----2--3--4----5|
+ *     debounce(60)
+ * -----1----------4--|
+ * ```
+ *
+ * Example:
+ *
+ * ```js
+ * import fromDiagram from 'xstream/extra/fromDiagram'
+ * import debounce from 'xstream/extra/debounce'
+ *
+ * const stream = fromDiagram('--1----2--3--4----5|')
+ *  .compose(debounce(60))
+ *
+ * stream.addListener({
+ *   next: i => console.log(i),
+ *   error: err => console.error(err),
+ *   complete: () => console.log('completed')
+ * })
+ * ```
+ *
+ * ```text
+ * > 1
+ * > 4
+ * > completed
+ * ```
+ *
+ * @param {number} period The amount of silence required in milliseconds.
+ * @return {Stream}
+ */
+function debounce(period) {
+    return function debounceOperator(ins) {
+        return new core_1.Stream(new DebounceOperator(period, ins));
+    };
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = debounce;
+
+},{"../core":243}],245:[function(require,module,exports){
+"use strict";
+var core_1 = require('../core');
 var DOMEventProducer = (function () {
     function DOMEventProducer(node, eventType, useCapture) {
         this.node = node;
@@ -24053,7 +24184,7 @@ function fromEvent(node, eventType, useCapture) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = fromEvent;
 
-},{"../core":243}],245:[function(require,module,exports){
+},{"../core":243}],246:[function(require,module,exports){
 "use strict";
 var core_1 = require('./core');
 exports.Stream = core_1.Stream;

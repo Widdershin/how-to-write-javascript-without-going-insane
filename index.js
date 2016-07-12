@@ -2,6 +2,7 @@ import {run} from '@cycle/xstream-run';
 import {makeDOMDriver, div} from '@cycle/dom';
 import diagram from 'stream-tree';
 import xs from 'xstream';
+import debounce from 'xstream/extra/debounce';
 import marked from 'marked';
 import {highlight} from 'highlight.js';
 
@@ -17,11 +18,25 @@ const fs = require('fs');
 
 const slides = fs
   .readFileSync(__dirname + '/README.md', 'utf-8')
-  .split('-----\n');
+  .split('-----\n')
+  .map((slide, index) => ({slide, key: index}));
 
-function view (slide) {
+function highlightCode (slide$) {
+  return slide$
+    .map(({slide, key}) => ({slide: marked(slide), key}));
+}
+
+function view ([slide, direction]) {
+  const style = {
+    position: 'absolute',
+    width: '93.5%',
+    transform: `translate(${100 * direction}vw, 0%)`,
+    delayed: {transform: `translate(0, 0)`},
+    remove: {transform: `translate(${100 * -direction}vw, 0)`}
+  };
+
   return (
-    div('.slide', {props: {innerHTML: slide}})
+    div('.slide', {key: slide.key, style, props: {innerHTML: slide.slide}})
   );
 }
 
@@ -38,7 +53,7 @@ function limitTo (min, max, value) {
 }
 
 const slideNavigation = diagram`
-  Given: ${{xs, slides, limitTo}}
+  Given: ${{xs, slides, limitTo, debounce}}
 
                    {sources.Keys}
                    /     |      \
@@ -56,28 +71,39 @@ const slideNavigation = diagram`
         back$             forward$
           |                   |
         {xs.merge(back$, forward$)}
-                     |
-  {.fold((total, change) => limitTo(0, slides.length - 1, total + change), 0)}
-                     |
-    {.map(slideIndex => slides[slideIndex])}
-                     |
-                   slide$
+                    |
+         {.compose(debounce(100))}
+            |                |
+            |                |
+            |                |
+            |       {.fold((total, change) => limitTo(0, slides.length - 1, total + change), 0)}
+            |                          |
+      {.startWith(1)}     {.map(slideIndex => slides[slideIndex])}
+            |                          |
+        direction$                 slide$
 `;
 
 const main = diagram`
-  Given: ${{xs, slides, div, marked, view, slideNavigation}}
+  Given: ${{xs, slides, div, highlightCode, view, slideNavigation}}
 
-          {sources}
-              |
-      {slideNavigation}
-              |
-          {.slide$}
-              |
-       {.map(marked)}
-              |
-        {.map(view)}
-              |
-             DOM
+                    {sources}
+                        |
+                {slideNavigation}
+                     |         |
+                 {.slide$} {.direction$}
+                     |         |
+           {highlightCode}     |
+                     |         |
+                     |         |
+                   slide$  direction$
+                     |         |
+  {slide$.map(slide => direction$.map(direction => [slide, direction]))}
+                        |
+                    {.flatten()}
+                        |
+                    {.map(view)}
+                        |
+                       DOM
 
 `;
 
