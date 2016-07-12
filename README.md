@@ -369,6 +369,10 @@ Favourites:
  * `_.zip`
  * `_.without`
 
+```bash
+ $ npm install lodash --save
+```
+
 -----
 
 moment.js
@@ -383,6 +387,10 @@ Time in JavaScript is a terrifying subject.
 moment().add(7, 'days')
 ```
 
+```bash
+ $ npm install moment --save
+```
+
 -----
 
 eslint
@@ -391,6 +399,10 @@ eslint
 `eslint` is a fast and configurable linter for JavaScript.
 
 It's a great way to enforce code style, and catch silly mistakes.
+
+```bash
+ $ npm install eslint -g
+```
 
 -----
 
