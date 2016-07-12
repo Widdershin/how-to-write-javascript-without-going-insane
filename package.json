@@ -4,9 +4,8 @@
   "description": "How to write JavaScript without going insane ===",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "markdown-doctest",
     "start": "budo index.js:bundle.js --live -- -t babelify -t brfs",
-    "test/docs": "markdown-doctest",
     "bundle": "browserify index.js -o bundle.js -t babelify -t brfs"
   },
   "author": "",
