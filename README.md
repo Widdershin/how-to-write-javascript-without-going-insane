@@ -410,3 +410,8 @@ Conclusion
 ---
  * JavaScript works best as a functional programming language
  * Traditional OO patterns tend to lead to frustration
+
+-----
+
+Questions?
+===
