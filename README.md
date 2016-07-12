@@ -290,29 +290,89 @@ But sometimes they can be useful.
 
 -----
 
-debugger + chrome debugger
+Debugging
+===
 
 -----
 
-console.*
+chrome debugger
+---
+
+Learn to love the Chrome devtools debugger.
+
+Fun fact, you can trigger the debugger in code with `debugger`.
+
+```js
+function doAThing () {
+  // ...
+
+  debugger
+
+  return aThing;
+}
+```
+
+Won't trigger until the devtools are open, which is a nice way to get to where you want to go.
 
 -----
 
-consider immutable objects yo
+console.*()
+---
+
+Love it or hate it, `console.log()` is one of the best ways to debug in JS.
+
+There are some other great `console` methods though:
+
+```js
+console.dir(objectOrElement);
+```
+
+![chrome dir](https://developer.chrome.com/devtools/docs/console-files/consoledir-body.png)
 
 -----
 
-iteration
+```js
+console.group(label);
+console.groupEnd();
+```
+
+![chrome group](https://pbs.twimg.com/media/CbTQwOZW4AAsedm.png)
 
 -----
 
-case statements vs objects
-
------
-
-linter
+Libraries
+===
 
 -----
 
 lodash
+---
+
+Fills in a missing chunk of methods in JavaScript that make functional programming much nicer.  Comparable to Ruby's `Enumerable` module.
+
+Favourites:
+
+`_.flatten`
+`_.groupBy`
+`_.zip`
+`_.without`
+
+-----
+
+moment.js
+---
+
+Time in JavaScript is a terrifying subject.
+
+`moment.js` provides a lovely API for working with time
+
+-----
+
+eslint
+---
+
+`eslint` is a fast and configurable linter for JavaScript.
+
+It's a great way to enforce code style, and catch silly mistakes
+
 
