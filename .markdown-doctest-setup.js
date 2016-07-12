@@ -1,6 +1,16 @@
+function Widget () {
+  return {
+    go: function () {}
+  }
+}
+
 module.exports = {
   globals: {
     window: {},
+
+    module: {exports: {}},
+
+    Widget,
 
     $: function () {
       return {
@@ -9,6 +19,11 @@ module.exports = {
           cb.bind(event, event);
         }
       }
-    }
+    },
+
+  },
+
+  require: {
+    './widget': Widget
   }
 }
