@@ -162,6 +162,19 @@ $('a.link').on('click', doAThing);
 
 -----
 
+`.map`, `.filter` and `.reduce` are your friends.
+---
+
+Most of the code I write in JavaScript uses just:
+
+  * objects
+  * arrays
+  * functions
+  * `.map`, `.filter`, `.reduce`
+  * `.forEach` is nice too
+
+-----
+
 Classes and inheritance
 ---
 
@@ -273,6 +286,8 @@ I write most everything in ES2015, because I find it has some niceties I enjoy.
 
 Not all parts of ES2015 are that great, in my opinion. I tend to avoid classes/inheritance, because I prefer the relative simplicity of objects + functions.
 
+-----
+
 You might not need...
 ---
 
@@ -350,10 +365,10 @@ Fills in a missing chunk of methods in JavaScript that make functional programmi
 
 Favourites:
 
-`_.flatten`
-`_.groupBy`
-`_.zip`
-`_.without`
+ * `_.flatten`
+ * `_.groupBy`
+ * `_.zip`
+ * `_.without`
 
 -----
 
@@ -362,7 +377,12 @@ moment.js
 
 Time in JavaScript is a terrifying subject.
 
-`moment.js` provides a lovely API for working with time
+`moment.js` provides a lovely API for working with time.
+
+<!-- skip-example -->
+```js
+moment().add(7, 'days')
+```
 
 -----
 
@@ -371,6 +391,11 @@ eslint
 
 `eslint` is a fast and configurable linter for JavaScript.
 
-It's a great way to enforce code style, and catch silly mistakes
+It's a great way to enforce code style, and catch silly mistakes.
 
+-----
 
+Conclusion
+---
+ * JavaScript works best as a functional programming language
+ * Traditional OO patterns tend to lead to frustration
