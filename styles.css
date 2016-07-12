@@ -3,19 +3,22 @@ h1, h2 {
 }
 
 body, html {
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 body {
-  background: #222;
+  background: #111;
   color: #ddd;
   font-family: Helvetica;
   font-size: 1.95rem;
 }
 
 .slide {
+  background: #222;
+  height: 100%;
   padding: 38px;
   padding-top: 10px;
+  transition: all 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 
 pre {
