@@ -4,7 +4,9 @@
   "description": "How to write JavaScript without going insane ===",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "budo index.js:bundle.js --live -- -t babelify -t brfs",
+    "test/docs": "markdown-doctest"
   },
   "author": "",
   "license": "MIT",
@@ -18,9 +20,13 @@
     "browserify": "^13.0.1",
     "budo": "^8.3.0",
     "garnish": "^5.2.0",
+    "highlight.js": "^9.5.0",
     "keycode": "^2.1.2",
     "marked": "^0.3.5",
     "stream-tree": "0.0.2",
     "xstream": "^5.1.4"
+  },
+  "devDependencies": {
+    "markdown-doctest": "^0.8.1"
   }
 }

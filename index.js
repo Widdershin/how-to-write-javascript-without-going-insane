@@ -3,8 +3,15 @@ import {makeDOMDriver, div} from '@cycle/dom';
 import diagram from 'stream-tree';
 import xs from 'xstream';
 import marked from 'marked';
+import {highlight} from 'highlight.js';
 
 import keysDriver from './drivers/keys-driver';
+
+marked.setOptions({
+  highlight: function (code) {
+    return highlight('js', code).value;
+  }
+});
 
 const fs = require('fs');
 
@@ -14,7 +21,7 @@ const slides = fs
 
 function view (slide) {
   return (
-    div({props: {innerHTML: slide}})
+    div('.slide', {props: {innerHTML: slide}})
   );
 }
 

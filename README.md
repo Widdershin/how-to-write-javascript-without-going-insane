@@ -1,37 +1,138 @@
 How to write JavaScript without going insane
 ===
 
+Because it's clearly too late for me.
+
 -----
 
-This talk:
+What is this talk?
+---
 
  * Practical tips
  * Little code snippets
  * Mix of dos, donts and useful tools
 
+-----
+
+What is this talk not?
+---
+
+ * A pitch for any particular framework
+ * A pitch for JavaScript as a language
 
 -----
 
-`this` is undefined
+Objects
 ===
 
-Bad:
+-----
+
+Here is one way to make an object in Javascript.
+
+```js
+function Person (name) {
+  this.name = name;
+}
+
+Person.prototype.sayName = function () {
+  console.log(this.name);
+}
+
+var person = new Person('Sofia');
+
+person.sayName();
+// => 'Sofia'
+```
+-----
+
+Here is another.
+
+```js
+var person = {
+  name: 'Sofia'
+}
+
+function sayName (person) {
+  console.log(person.name);
+}
+
+sayName(person);
+// => 'Sofia'
+```
+
+-----
+
+Sometimes we want a number of similar objects.
+
+```js
+function Person (name) {
+  return {
+    name: name,
+
+    kind: 'human'
+  }
+}
+
+function sayName (person) {
+  console.log(person.name);
+}
+
+var person = Person('Sofia');
+
+sayName(person);
+// => 'Sofia'
+```
+
+-----
+
+Why though?
+===
+
+-----
+
+Because of `this`.
+
+The value of `this` in a function depends upon how it is called:
+<!-- skip-example -->
+```js
+window.name = 'wat';
+
+var person = {
+  name: 'Charlie',
+  sayName: function () {
+    console.log(this.name);
+  }
+}
+
+person.sayName();
+// => 'Charlie'
+
+var sayName = person.sayName;
+
+sayName();
+// => 'wat'
+```
+
+`this` can lead to some confusing bugs.
+
+-----
+
+Avoiding `this`
+---
+
+Instead of:
 ```js
 $('a.link').on('click', function () {
   this.preventDefault();
 });
 ```
 
-Good:
+Try:
 ```js
 $('a.link').on('click', function (event) {
   event.preventDefault();
 });
 ```
-
------
-
-how `this` actually works
 
 -----
 

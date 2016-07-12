@@ -1,0 +1,22 @@
+
+body {
+  background: #222;
+  color: #ddd;
+  font-family: Helvetica;
+  font-size: 2rem;
+}
+
+h2 {
+  margin-top: 5px;
+  padding-top: 0px;
+}
+
+.slide {
+  padding: 40px;
+  padding-top: 10px;
+}
+
+pre {
+  background: #1B1B1B;
+  padding: 15px;
+}
