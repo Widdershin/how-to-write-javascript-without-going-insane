@@ -101,7 +101,7 @@ function view(_ref2) {
 
   var style = {
     position: 'absolute',
-    width: '93.5%',
+    width: '95.3%',
     transform: 'translate(' + 100 * direction + 'vw, 0%)',
     delayed: { transform: 'translate(0, 0)' },
     remove: { transform: 'translate(' + 100 * -direction + 'vw, 0)' }
