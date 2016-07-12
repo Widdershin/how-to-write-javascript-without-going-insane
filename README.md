@@ -167,8 +167,6 @@ Classes and inheritance
 
 Classes and inheritance are at odds with the most elegant parts of JavaScript.
 
-To avoid insanity, they are best avoided.
-
 -----
 
 `window`
